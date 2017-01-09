@@ -1,0 +1,24 @@
+{
+  "name": "screeps-jnesselr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "console": "node console.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-screeps": "^1.2.1",
+    "grunt-webpack": "^1.0.18",
+    "load-grunt-tasks": "^3.5.2",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "devDependencies": {
+    "request": "^2.79.0",
+    "sockjs-client": "^1.1.1"
+  }
+}
