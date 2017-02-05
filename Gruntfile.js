@@ -14,7 +14,7 @@ module.exports = function(grunt) {
                 target: 'node',
                 entry: './src/main.js',
                 output: {
-                    path: '/Users/jnesselr/Library/Application Support/Screeps/scripts/127_0_0_1___21025/default/',
+                    path: './dist/',
                     filename: 'main.js',
                     libraryTarget: "commonjs2"
                 },
@@ -39,5 +39,5 @@ module.exports = function(grunt) {
         },
     });
 
-    grunt.registerTask('default', ['webpack']);
+    grunt.registerTask('default', ['webpack', 'screeps']);
 };

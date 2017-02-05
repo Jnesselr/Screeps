@@ -4,16 +4,16 @@ module.exports = {
   key: 'basic_upgrader',
   /** @param {Spawn} spawn **/
   needed: function (spawn) {
-    return 0;
+    return 1;
   },
   body: [CARRY, CARRY, CARRY, WORK, MOVE],
 
   /** @param {Creep} creep **/
   run: function (creep) {
-    switch (creep.memory.state) {
-      case 'Init':
-
-    }
+    // switch (creep.memory.state) {
+    //   case 'Init':
+    //
+    // }
     if (creep.memory.upgrading) {
       let result = creep.upgradeController(creep.room.controller);
 

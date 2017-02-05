@@ -2,7 +2,7 @@ var resource_fetch = require('./../utils/resource_fetch.js');
 
 module.exports = {
   key: 'basic_transfer',
-  needed: 0,
+  needed: 1,
   body: [CARRY, CARRY, MOVE, MOVE],
 
   /** @param {Creep} creep **/

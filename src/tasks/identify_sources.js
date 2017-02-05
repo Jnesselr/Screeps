@@ -2,8 +2,9 @@ let manager = require('../event_manager');
 
 /** @param {string} room_name */
 module.exports = {
-  on: [
-    manager.events.NEW_ROOM
+  name: 'identify sources',
+  when: [
+    // manager.events.NEW_ROOM
   ],
   run: function (obj) {
     let room = Game.rooms[obj.room];
@@ -13,7 +14,7 @@ module.exports = {
     for (let index in sources) {
       let source = sources[index];
 
-      manager.new_source(source)
+      on.new_source(source)
     }
   }
 };

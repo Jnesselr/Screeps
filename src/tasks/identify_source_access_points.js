@@ -1,9 +1,8 @@
-let manager = require('../event_manager');
-
 /** @param {int} id */
 module.exports = {
-  on: [
-    manager.events.NEW_SOURCE
+  name: 'identify source access points',
+  when: [
+    // events.NEW_SOURCE
   ],
   run: function (object) {
     let source = Game.getObjectById(object.id);
@@ -16,8 +15,9 @@ module.exports = {
     for (let index in objects_in_area) {
       let obj = objects_in_area[index];
       if (obj.type == 'terrain') {
-        if (obj.terrain != 'wall') {
-          manager.new_source_access_point(source.room.getPositionAt(obj.x, obj.y))
+        let terrainIsWalkable = obj.terrain & (TERRAIN_MASK_WALL | TERRAIN_MASK_SWAMP) != 0;
+        if (terrainIsWalkable) {
+          on.new_source_access_point(source.room.getPositionAt(obj.x, obj.y))
         }
       }
     }

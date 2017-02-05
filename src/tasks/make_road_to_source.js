@@ -2,8 +2,9 @@ let manager = require('../event_manager');
 
 /** @param {RoomPosition} pos */
 module.exports = {
-  on: [
-    manager.events.NEW_SOURCE_ACCESS_POINT
+  name: 'make road to source',
+  when: [
+    // manager.events.NEW_SOURCE_ACCESS_POINT
   ],
   run: function (object) {
     let pos = Game.rooms[object.roomName].getPositionAt(object.x, object.y);

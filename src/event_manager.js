@@ -1,32 +1,33 @@
 let run_script = function (script, thing) {
-  let tasks = require.context('./tasks/', true, /\.js$/);
-  let task = tasks(script);
+  let task = manager.task_context(script);
   task.run(thing);
 };
 
-let on = function (event_type, object) {
-  console.log(`Event ${event_type} triggered for ${JSON.stringify(object)}`);
-
-  let event = {
-    type: event_type,
-    object: object,
-    scripts: Memory.event.event_map[event_type],
-  };
-
-  Memory.event.events.push(event);
-};
-
-module.exports = {
+let manager = {
   run: function () {
-    if (Memory.event.events.length == 0)
-      return;
+    if (Memory.event.events == null || Memory.event.events.length == 0)
+      return false;
+
+    if (Game.time in Memory.event.tasksOnTick) {
+      let tasks = Memory.event.tasksOnTick[Game.time];
+
+      while(tasks.length > 0) {
+        let task = tasks[0];
+
+        console.log(`Running ${task.script}`);
+        run_script(script, task.object);
+
+        tasks.shift();
+      }
+
+      return true;
+    }
 
     let event = Memory.event.events[0];
+    let object = event.object;
 
     while (event.scripts.length > 0) {
       let script = event.scripts[0];
-
-      let object = event.object;
 
       console.log(`Running ${script}`);
       run_script(script, object);
@@ -35,32 +36,10 @@ module.exports = {
     }
 
     Memory.event.events.shift();
-  },
-  events: {
-    NEW_ROOM: 'new_room',
-    NEW_SOURCE: 'new_source',
-    NEW_SOURCE_ACCESS_POINT: 'nsap'
-  },
 
-  new_room: function (name) {
-    on(this.events.NEW_ROOM, {room: name});
+    return true
   },
-  new_source: function (source) {
-    on(this.events.NEW_SOURCE, {id: source.id});
-  },
-  new_source_access_point: function (position) {
-    if (!(position.roomName in Memory.access_points)) {
-      Memory.access_points[position.roomName] = {};
-    }
-
-    if (!(position.x in Memory.access_points[position.roomName])) {
-      Memory.access_points[position.roomName][position.x] = {};
-    }
-
-    Memory.access_points[position.roomName][position.x][position.y] = {
-      position: position
-    };
-
-    on(this.events.NEW_SOURCE_ACCESS_POINT, position);
-  }
+  task_context: require.context('./tasks/', true, /\.js$/)
 };
+
+module.exports = manager;
