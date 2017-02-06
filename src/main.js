@@ -7,6 +7,12 @@ let manager = require('./event_manager');
 
 module.exports.loop = function () {
   while (Game.cpu.getUsed() < Game.cpu.limit) {
-    manager.run();
+    if (!manager.run())
+      break;
   }
+
+  let spawn = Game.spawns['Spawn1'];
+  spawner(spawn);
+
+  runner();
 };

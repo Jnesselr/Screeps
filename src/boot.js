@@ -2,6 +2,8 @@ let manager = require('./event_manager');
 
 global.events = {
   NEW_ROOM: 'new_room',
+  NEW_CREEP: 'new_creep',
+  NEW_CREEP_SPAWNING: 'ncs',
   NEW_SOURCE: 'new_source',
   NEW_SOURCE_ACCESS_POINT: 'nsap'
 };
@@ -24,6 +26,12 @@ let on_event = function (event_type, object) {
 global.on = {
   new_room: function (name) {
     on_event(events.NEW_ROOM, {room: name});
+  },
+  new_creep: function (name) {
+    on_event(events.NEW_CREEP, {creep: name })
+  },
+  new_creep_spawning: function(spawn_name, creep_name) {
+    on_event(events.NEW_CREEP_SPAWNING, {spawn: spawn_name, creep: creep_name})
   },
   new_source: function (source) {
     on_event(events.NEW_SOURCE, {id: source.id});
@@ -60,21 +68,30 @@ global.on = {
   }
 };
 
-function initialize() {
-  // Boot
-  console.log('Initializing');
+function first_time_initialization() {
+  init_event_system();
 
-  Memory.event = {
-    name_source_map: {},
-    event_map: {},
-    tasksOnTick: {}
-  };
+  for (let room in Game.rooms) {
+    on.new_room(room);
+  }
 
-  if (Memory.event['tasksOnTick'] == null) {
+  Memory.initialized = true;
+}
+
+function init_event_system() {
+  if (Memory.event == null) {
+    Memory.event = {};
+  }
+
+  if (Memory.event.tasksOnTick == null) {
     Memory.event.tasksOnTick = {}
   }
 
+  Memory.event.name_source_map = {};
+  Memory.event.event_map = {};
+
   manager.task_context.keys().forEach(function (filename) {
+    console.log(`Loading ${filename}`);
     let task = manager.task_context(filename);
 
     task.when.forEach(function (event) {
@@ -86,16 +103,19 @@ function initialize() {
       Memory.event.name_source_map[task.name] = filename;
     })
   });
-
-  for (let room in Game.rooms) {
-    on.new_room(room);
-  }
-
-  Memory.initialized = true;
 }
 
 module.exports = function () {
+  // Cache buster
+  if (Memory.cached_hash != '<%= hash %>') {
+    console.log('Reinitialization');
+    init_event_system();
+
+    Memory.cached_hash = '<%= hash %>';
+  }
+
   if (Memory.initialized == null) {
-    initialize();
+    console.log('First time Initialization');
+    first_time_initialization();
   }
 };
