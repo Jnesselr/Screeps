@@ -10,6 +10,10 @@ module.exports = {
     /** @type {Creep} creep */
     let creep = Game.creeps[creep_name];
 
+    // Somehow we said we were spawning a creep that didn't exist
+    if (creep == null)
+      return;
+
     /** @type {Spawn} spawn */
     let spawn = Game.spawns[spawn_name];
 

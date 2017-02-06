@@ -8,18 +8,20 @@
  */
 
 module.exports = {
-    fetch_closest_dropped_energy: function(creep) {
-        var target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
-        if(target) {
-            if(creep.pickup(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
-            }
-        } else {
-            var flag = Game.flags['StagingArea'];
-            if(creep.fatigue == 0)
-                creep.moveTo(flag);
+  fetch_closest_dropped_energy: function (creep) {
+    let target = creep.room.find(FIND_DROPPED_ENERGY).sort(function (a, b) {
+      return b.energy - a.energy;
+    });
+
+    if (target) {
+      let resource = target[0];
+      if (creep.pickup(resource) == ERR_NOT_IN_RANGE) {
+        if (creep.fatigue == 0) {
+          creep.moveTo(resource);
         }
-        
-        // TODO Grab energy from container if it's closer
+      }
     }
+
+    // TODO Grab energy from container if it's closer
+  }
 };

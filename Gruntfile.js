@@ -35,6 +35,7 @@ module.exports = function (grunt) {
             var js_template = underscore.template(template);
             var js = js_template({hash: stats.hash});
 
+            console.log(`Hash replaced with ${stats.hash}`);
             fs.writeFileSync(jsPath, js);
           });
         }

@@ -4,7 +4,7 @@ let manager = require('../event_manager');
 module.exports = {
   name: 'identify sources',
   when: [
-    // manager.events.NEW_ROOM
+    events.NEW_ROOM
   ],
   run: function (obj) {
     let room = Game.rooms[obj.room];

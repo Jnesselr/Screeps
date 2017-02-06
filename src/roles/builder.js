@@ -1,8 +1,8 @@
 const resource_fetch = require('./../utils/resource_fetch.js');
 
 const build_order = [
-  STRUCTURE_EXTENSION,
   STRUCTURE_ROAD,
+  STRUCTURE_EXTENSION,
   STRUCTURE_CONTAINER,
   STRUCTURE_WALL,
   STRUCTURE_RAMPART
@@ -12,7 +12,7 @@ module.exports = {
   key: 'basic_builder',
   /** @param {Spawn} spawn **/
   needed: function (spawn) {
-    return 0;
+    return 3;
   },
   body: [CARRY, WORK, MOVE, MOVE, MOVE],
 
@@ -32,7 +32,7 @@ module.exports = {
 
         if (targets.length > 0) {
           target = targets[0];
-          console.log(`${creep} targeting ${target} to build against`);
+          console.log(`${creep.name} targeting ${target.structureType} at ${JSON.stringify(target.pos)} to build against`);
 
           if (target) {
             creep.memory.target = target.id;
