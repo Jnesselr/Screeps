@@ -9,12 +9,12 @@ global.events = {
 };
 
 let on_event = function (event_type, object) {
-  console.log(`Event ${event_type} triggered for ${JSON.stringify(object)}`);
+  console.log(`Event '${event_type}' triggered for ${JSON.stringify(object)}`);
 
   let event = {
     type: event_type,
     object: object,
-    scripts: Memory.event.event_map[event_type],
+    scripts: Memory.event.event_map[event_type].slice(),
   };
 
   if (Memory.event.events == null)

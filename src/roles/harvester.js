@@ -1,6 +1,6 @@
 module.exports = {
   key: 'basic_harvester',
-  needed: 1,
+  needed: 2,
   body: [WORK, WORK, MOVE],
 
   /** @param {Creep} creep **/
