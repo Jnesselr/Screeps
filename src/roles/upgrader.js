@@ -4,7 +4,7 @@ module.exports = {
   key: 'basic_upgrader',
   /** @param {Spawn} spawn **/
   needed: function (spawn) {
-    return 2;
+    return 3;
   },
   body: [CARRY, CARRY, CARRY, WORK, MOVE],
 

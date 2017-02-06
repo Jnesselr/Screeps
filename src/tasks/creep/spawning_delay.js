@@ -7,6 +7,9 @@ module.exports = {
     let spawn_name = object.spawn;
     let creep_name = object.creep;
 
+    /** @type {Creep} creep */
+    let creep = Game.creeps[creep_name];
+
     /** @type {Spawn} spawn */
     let spawn = Game.spawns[spawn_name];
 

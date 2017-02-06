@@ -28,7 +28,7 @@ module.exports = function (spawn) {
         let result = spawn.createCreep(creep_template.body, null, memory);
         if (isNaN(result)) {
           console.log(`Spawning ${result} from Spawn1 as ${filename}`);
-          on.new_creep_spawning(result, creep_template.body, memory);
+          on.new_creep_spawning(spawn.name, result);
         }
       }
     }

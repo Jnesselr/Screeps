@@ -5,23 +5,26 @@ let run_script = function (script, thing) {
 
 let manager = {
   run: function () {
-    if (Memory.event.events == null || Memory.event.events.length == 0)
-      return false;
-
     if (Game.time in Memory.event.tasksOnTick) {
+      console.log(`${Game.time} found in tasks on tick`);
       let tasks = Memory.event.tasksOnTick[Game.time];
 
       while(tasks.length > 0) {
         let task = tasks[0];
 
         console.log(`Running ${task.script}`);
-        run_script(script, task.object);
+        run_script(task.script, task.object);
 
         tasks.shift();
       }
 
+      delete Memory.event.tasksOnTick[Game.time];
+
       return true;
     }
+
+    if (Memory.event.events == null || Memory.event.events.length == 0)
+      return false;
 
     let event = Memory.event.events[0];
     let object = event.object;
