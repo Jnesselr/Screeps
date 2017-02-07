@@ -3,7 +3,7 @@ module.exports = {
   when: [
     events.NEW_CREEP
   ],
-  run: function (object) {
+  run: function (event_type, object) {
     let creep_name = object.creep;
 
     /** @type {Creep} creep */

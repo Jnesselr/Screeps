@@ -4,7 +4,7 @@ module.exports = {
   when: [
     events.NEW_SOURCE
   ],
-  run: function (object) {
+  run: function (event_type, object) {
     let source = Game.getObjectById(object.id);
     let top = source.pos.y - 1;
     let left = source.pos.x - 1;

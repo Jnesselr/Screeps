@@ -1,11 +1,13 @@
 let manager = require('./event_manager');
 
 global.events = {
+  GAME_TICK: 'game_tick',
   NEW_ROOM: 'new_room',
   NEW_CREEP: 'new_creep',
   NEW_CREEP_SPAWNING: 'ncs',
   NEW_SOURCE: 'new_source',
-  NEW_SOURCE_ACCESS_POINT: 'nsap'
+  NEW_SOURCE_ACCESS_POINT: 'nsap',
+  CONTROLLER_UPGRADE: 'cu'
 };
 
 let on_event = function (event_type, object) {
@@ -65,6 +67,9 @@ global.on = {
       Memory.event.tasksOnTick[game_tick] = [task];
     else
       Memory.event.tasksOnTick[game_tick].push(task);
+  },
+  controller_upgrade: function(controller) {
+    on_event(events.CONTROLLER_UPGRADE, {id: controller.id })
   }
 };
 

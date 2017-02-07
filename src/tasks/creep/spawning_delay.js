@@ -3,7 +3,7 @@ module.exports = {
   when: [
     events.NEW_CREEP_SPAWNING
   ],
-  run: function (object) {
+  run: function (event_type, object) {
     let spawn_name = object.spawn;
     let creep_name = object.creep;
 

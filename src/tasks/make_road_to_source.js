@@ -6,7 +6,7 @@ module.exports = {
   when: [
     events.NEW_SOURCE_ACCESS_POINT
   ],
-  run: function (object) {
+  run: function (event_type, object) {
     let pos = Game.rooms[object.roomName].getPositionAt(object.x, object.y);
 
     let found_path = PathFinder.search(

@@ -1,6 +1,6 @@
-let run_script = function (script, thing) {
+let run_script = function (script, event_type, thing) {
   let task = manager.task_context(script);
-  task.run(thing);
+  task.run(event_type, thing);
 };
 
 let manager = {
@@ -13,7 +13,7 @@ let manager = {
         let task = tasks[0];
 
         console.log(`Running ${task.script}`);
-        run_script(task.script, task.object);
+        run_script(task.script, events.GAME_TICK, task.object);
 
         tasks.shift();
       }
@@ -33,7 +33,7 @@ let manager = {
       let script = event.scripts[0];
 
       console.log(`Running ${script}`);
-      run_script(script, object);
+      run_script(script, event.type, object);
 
       event.scripts.shift();
     }
