@@ -18,10 +18,10 @@ module.exports = {
     let spawn = Game.spawns[spawn_name];
 
     if (creep.spawning) {
-      let gameTickToChick = spawn.spawning.remainingTime + Game.time;
+      let gameTickToCheck = spawn.spawning.remainingTime + Game.time;
 
-      on.game_tick(gameTickToChick, this.name, object);
-      console.log(`Creep ${creep_name} is still spawning, checking again: ${gameTickToChick}`)
+      on.game_tick(gameTickToCheck, this.name, object);
+      console.log(`Creep ${creep_name} is still spawning, checking again: ${gameTickToCheck}`)
     } else {
       on.new_creep(creep_name);
       console.log(`Creep ${creep_name} has been spawned`)

@@ -80,7 +80,7 @@ function first_time_initialization() {
     on.new_room(room);
   }
 
-  Memory.initialized = true;
+  Memory.first_time_init_done = true;
 }
 
 function init_event_system() {
@@ -96,10 +96,11 @@ function init_event_system() {
   Memory.event.event_map = {};
 
   manager.task_context.keys().forEach(function (filename) {
-    console.log(`Loading ${filename}`);
     let task = manager.task_context(filename);
 
     task.when.forEach(function (event) {
+      console.log(`Event '${event}' registered for '${filename}'`);
+
       if (Memory.event.event_map[event] == null) {
         Memory.event.event_map[event] = [];
       }
@@ -119,8 +120,10 @@ module.exports = function () {
     Memory.cached_hash = '<%= hash %>';
   }
 
-  if (Memory.initialized == null) {
+  if (Memory.first_time_init_done == null) {
     console.log('First time Initialization');
     first_time_initialization();
   }
+
+  global.systemIsUp = true;
 };

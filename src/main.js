@@ -1,5 +1,7 @@
 // Initialize stuff
-require('./boot')();
+if (global.systemIsUp == null) {
+  require('./boot')();
+}
 
 let spawner = require('./spawner');
 let runner = require('./runner');
