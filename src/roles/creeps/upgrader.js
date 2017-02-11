@@ -1,4 +1,4 @@
-var resource_fetch = require('./../utils/resource_fetch.js');
+var resource_fetch = require('./../../utils/resource_fetch.js');
 
 module.exports = {
   key: 'basic_upgrader',

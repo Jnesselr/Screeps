@@ -1,4 +1,4 @@
-const resource_fetch = require('./../utils/resource_fetch.js');
+const resource_fetch = require('./../../utils/resource_fetch.js');
 
 const build_order = [
   STRUCTURE_ROAD,
