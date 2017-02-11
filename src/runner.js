@@ -1,15 +1,15 @@
 let role_context = context.role();
 
 module.exports = function () {
-  for (let name in Game.creeps) {
+  Object.keys(Game.creeps).forEach(function (name) {
     let creep = Game.creeps[name];
 
     if(creep.spawning)
-      continue;
+      return;
 
     let filename = Memory.role.name_file_map[creep.memory.role];
     let script = role_context(filename);
 
     script.run(creep);
-  }
+  });
 };
