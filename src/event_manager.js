@@ -1,5 +1,5 @@
 let run_script = function (script, event_type, thing) {
-  let event_context = context.event();
+  let event_context = context.task();
   let task = event_context(script);
 
   task.run(event_type, thing);
