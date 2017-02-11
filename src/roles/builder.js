@@ -10,9 +10,10 @@ const build_order = [
 
 module.exports = {
   key: 'basic_builder',
+  type: roleType.CREEP,
   /** @param {Spawn} spawn **/
   needed: function (spawn) {
-    return 5;
+    return 3;
   },
   body: [CARRY, WORK, MOVE, MOVE, MOVE],
 
@@ -62,7 +63,12 @@ module.exports = {
         if (target) {
           let result = creep.build(target);
           if (result == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target);
+            creep.moveTo(target, {
+              visualizePathStyle: {
+                stroke: '#00a4ff',
+                strokeWidth: .15,
+              }
+            });
           } else if (result == ERR_NOT_ENOUGH_RESOURCES) {
             creep.memory.state = 'Need_Energy';
           }

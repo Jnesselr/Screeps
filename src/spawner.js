@@ -9,6 +9,11 @@ module.exports = function (spawn) {
   context.keys().forEach(function (filename) {
     let creep_template = context(filename);
 
+    // // Ignore anything not a creep
+    // if (creep_template.type != roleType.CREEP) {
+    //   return
+    // }
+
     let creeps_of_type = _.filter(Game.creeps, (creep) => creep.memory.script == filename);
 
     let needed = creep_template.needed;

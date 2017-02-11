@@ -1,5 +1,6 @@
 module.exports = {
   key: 'basic_harvester',
+  type: roleType.CREEP,
   needed: 2,
   body: [WORK, WORK, MOVE],
 

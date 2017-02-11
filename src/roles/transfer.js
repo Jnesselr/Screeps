@@ -3,11 +3,13 @@ let resource_fetch = require('./../utils/resource_fetch.js');
 let container_filter = function (structure) {
   return (structure.structureType == STRUCTURE_SPAWN && structure.energy < structure.energyCapacity) ||
     (structure.structureType == STRUCTURE_EXTENSION && structure.energy < structure.energyCapacity) ||
-    (structure.structureType == STRUCTURE_CONTAINER && structure.energy < structure.storeCapacity)
+    (structure.structureType == STRUCTURE_CONTAINER && structure.energy < structure.storeCapacity) ||
+    (structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity)
 };
 
 module.exports = {
   key: 'basic_transfer',
+  type: roleType.CREEP,
   needed: 1,
   body: [CARRY, CARRY, MOVE, MOVE],
 

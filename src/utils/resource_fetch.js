@@ -17,7 +17,12 @@ module.exports = {
       let resource = target[0];
       if (creep.pickup(resource) == ERR_NOT_IN_RANGE) {
         if (creep.fatigue == 0) {
-          creep.moveTo(resource);
+          creep.moveTo(resource, {
+            visualizePathStyle: {
+              stroke: '#fffe00',
+              strokeWidth: .15,
+            }
+          });
         }
       }
     }
