@@ -22,6 +22,10 @@ let system_setup = {
     init: function () {
       console.log('Role setup called');
 
+      if(Memory.towers == null) {
+        Memory.towers = {};
+      }
+
       if (Memory.role == null) {
         Memory.role = {};
       }
@@ -61,10 +65,18 @@ let system_setup = {
       let on_event = function (event_type, object) {
         console.log(`Event '${event_type}' triggered for ${JSON.stringify(object)}`);
 
+        let scripts;
+        if(Memory.event.event_map[event_type] == null) {
+          scripts = []
+        } else {
+          // Slice causes a copy to be made
+          scripts = Memory.event.event_map[event_type].slice();
+        }
+
         let event = {
           type: event_type,
           object: object,
-          scripts: Memory.event.event_map[event_type].slice(),
+          scripts: scripts,
         };
 
         if (Memory.event.events == null)
@@ -105,10 +117,18 @@ let system_setup = {
 
           on_event(events.NEW_SOURCE_ACCESS_POINT, position);
         },
+        new_tower: function(tower) {
+          if(Memory.towers[tower.id] == null) {
+            Memory.towers[tower.id] = {
+              role: 'tower'
+            };
+
+            on_event(events.NEW_TOWER, {id: tower.id})
+          }
+        },
         game_tick: function (game_tick, task_name, object) {
           let task = {
             name: task_name,
-            script: Memory.event.name_source_map[task_name],
             object: object
           };
 
