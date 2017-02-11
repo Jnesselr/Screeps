@@ -1,6 +1,5 @@
 /**
  * @param {Spawn} spawn
- * @param {Object} creep_templates
  **/
 
 let role_context = context.role();
