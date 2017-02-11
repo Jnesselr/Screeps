@@ -9,9 +9,7 @@
 
 module.exports = {
   fetch_closest_dropped_energy: function (creep) {
-    let target = creep.room.find(FIND_DROPPED_ENERGY).sort(function (a, b) {
-      return b.energy - a.energy;
-    });
+    let target = creep.room.find(FIND_DROPPED_ENERGY);
 
     if (target) {
       let resource = target[0];
