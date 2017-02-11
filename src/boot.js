@@ -180,9 +180,9 @@ function first_time_initialization() {
   system_setup.event.init();
   system_setup.role.init();
 
-  for (let room in Game.rooms) {
+  Object.keys(Game.rooms).forEach(function(room_name) {
     on.new_room(room);
-  }
+  });
 
   Memory.first_time_init_done = true;
 }
