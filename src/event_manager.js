@@ -13,9 +13,19 @@ let manager = {
 
       while(tasks.length > 0) {
         let task = tasks[0];
+        let script;
 
-        console.log(`Running ${task.script}`);
-        run_script(task.script, events.GAME_TICK, task.object);
+        if(task.name != null) {
+          script = Memory.event.name_source_map[task.name];
+        } else {
+          console.log(`Pulling script directly for ${JSON.stringify(task)}`);
+          script = task.script;
+        }
+
+        console.log(`Running ${script}`);
+
+
+        run_script(script, events.GAME_TICK, task.object);
 
         tasks.shift();
       }

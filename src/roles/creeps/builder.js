@@ -50,6 +50,8 @@ module.exports = {
 
           if (target) {
             creep.memory.target = target.id;
+            creep.memory.target_type = target.structureType;
+            creep.memory.target_pos = target.pos;
             creep.memory.state = 'Building';
 
             creep.say(target.structureType);

@@ -11,7 +11,7 @@ module.exports = function (spawn) {
     let filename = Memory.role.name_file_map[role_name];
     let creep_template = role_context(filename);
 
-    let creeps_of_type = _.filter(Game.creeps, (creep) => creep.memory.script == filename);
+    let creeps_of_type = _.filter(Game.creeps, (creep) => creep.memory.role == creep_template.key);
 
     let needed = creep_template.needed;
     if (typeof(needed) == 'function') {

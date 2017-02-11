@@ -54,7 +54,8 @@ let system_setup = {
         NEW_CREEP_SPAWNING: 'ncs',
         NEW_SOURCE: 'new_source',
         NEW_SOURCE_ACCESS_POINT: 'nsap',
-        CONTROLLER_UPGRADE: 'cu'
+        NEW_TOWER: 'new_tower',
+        CONTROLLER_UPGRADE: 'cu',
       };
 
       let on_event = function (event_type, object) {
@@ -106,6 +107,7 @@ let system_setup = {
         },
         game_tick: function (game_tick, task_name, object) {
           let task = {
+            name: task_name,
             script: Memory.event.name_source_map[task_name],
             object: object
           };
