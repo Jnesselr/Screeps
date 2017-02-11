@@ -3,11 +3,11 @@
  * @param {Object} creep_templates
  **/
 
-let context = require.context('./roles/', true, /\.js$/);
+let role_context = context.role();
 
 module.exports = function (spawn) {
-  context.keys().forEach(function (filename) {
-    let creep_template = context(filename);
+  role_context.keys().forEach(function (filename) {
+    let creep_template = role_context(filename);
 
     // // Ignore anything not a creep
     // if (creep_template.type != roleType.CREEP) {

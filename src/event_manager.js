@@ -1,5 +1,7 @@
 let run_script = function (script, event_type, thing) {
-  let task = manager.task_context(script);
+  let event_context = context.event();
+  let task = event_context(script);
+
   task.run(event_type, thing);
 };
 
@@ -41,8 +43,7 @@ let manager = {
     Memory.event.events.shift();
 
     return true
-  },
-  task_context: require.context('./tasks/', true, /\.js$/)
+  }
 };
 
 module.exports = manager;

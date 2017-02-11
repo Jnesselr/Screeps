@@ -1,6 +1,16 @@
-let manager = require('./event_manager');
-
 let system_setup = {
+  context: {
+    always: function () {
+      global.context = {
+        task: function () {
+          return require.context('./tasks/', true, /\.js$/)
+        },
+        role: function () {
+          return require.context('./roles/', true, /\.js$/);
+        }
+      };
+    }
+  },
   role: {
     always: function () {
       global.roleType = {
@@ -10,7 +20,29 @@ let system_setup = {
 
     },
     init: function () {
-      Memory.roles = {};
+      console.log('Role setup called');
+
+      if (Memory.role == null) {
+        Memory.role = {};
+      }
+
+      Memory.role.name_file_map = {};
+      Memory.role.type_name_map = {};
+
+      let role_context = context.role();
+
+      role_context.keys().forEach(function (filename) {
+        let role = role_context(filename);
+        console.log(`Role '${filename}' registered for '${role.type}'`);
+
+        Memory.role.name_file_map[role.key] = filename;
+
+        if (Memory.role.type_name_map[role.type] == null) {
+          Memory.role.type_name_map[role.type] = [];
+        }
+
+        Memory.role.type_name_map[role.type].push(role.key);
+      });
     }
   },
   event: {
@@ -102,8 +134,10 @@ let system_setup = {
       Memory.event.name_source_map = {};
       Memory.event.event_map = {};
 
-      manager.task_context.keys().forEach(function (filename) {
-        let task = manager.task_context(filename);
+      let task_context = context.task();
+
+      task_context.keys().forEach(function (filename) {
+        let task = task_context(filename);
 
         task.when.forEach(function (event) {
           console.log(`Event '${event}' registered for '${filename}'`);
@@ -132,6 +166,7 @@ function first_time_initialization() {
 }
 
 module.exports = function () {
+  system_setup.context.always();
   system_setup.event.always();
   system_setup.role.always();
 

@@ -1,9 +1,9 @@
-let context = require.context('./roles/', true, /\.js$/);
+let role_context = context.role();
 
 module.exports = function () {
   for (let name in Game.creeps) {
     let creep = Game.creeps[name];
-    let script = context(creep.memory.script);
+    let script = role_context(creep.memory.script);
 
     script.run(creep);
   }
