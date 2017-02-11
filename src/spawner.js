@@ -6,13 +6,11 @@
 let role_context = context.role();
 
 module.exports = function (spawn) {
-  role_context.keys().forEach(function (filename) {
-    let creep_template = role_context(filename);
+  let roles = Memory.role.type_name_map[roleType.CREEP];
 
-    // // Ignore anything not a creep
-    // if (creep_template.type != roleType.CREEP) {
-    //   return
-    // }
+  roles.forEach(function (role_name) {
+    let filename = Memory.role.name_file_map[role_name];
+    let creep_template = role_context(filename);
 
     let creeps_of_type = _.filter(Game.creeps, (creep) => creep.memory.script == filename);
 
@@ -25,14 +23,15 @@ module.exports = function (spawn) {
     if (typeof(creep_template.memory) == 'function') {
       memory = creep_template.memory()
     }
-    memory['script'] = filename;
+
+    memory['role'] = creep_template.key;
     memory['state'] = 'Init';
 
     if (creeps_of_type.length < needed) {
       if (spawn.canCreateCreep(creep_template.body) == OK) {
         let result = spawn.createCreep(creep_template.body, null, memory);
         if (isNaN(result)) {
-          console.log(`Spawning ${result} from Spawn1 as ${filename}`);
+          console.log(`Spawning ${result} from Spawn1 as ${creep_template.key}`);
           on.new_creep_spawning(spawn.name, result);
         }
       }

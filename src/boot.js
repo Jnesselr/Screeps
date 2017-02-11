@@ -173,6 +173,7 @@ module.exports = function () {
   if (Memory.first_time_init_done == null) {
     console.log('First time Initialization');
     first_time_initialization();
+
   } else if (Memory.cached_hash != '<%= hash %>') {
     // Cache buster
 
