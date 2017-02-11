@@ -1,6 +1,3 @@
-let manager = require('../event_manager');
-
-/** @param {RoomPosition} pos */
 module.exports = {
   name: 'make road to source',
   when: [

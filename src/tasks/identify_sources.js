@@ -1,6 +1,3 @@
-let manager = require('../event_manager');
-
-/** @param {string} room_name */
 module.exports = {
   name: 'identify sources',
   when: [
