@@ -24,6 +24,10 @@ let system_setup = {
       if(Memory.structures.storage == null) {
         Memory.structures.storage = {};
       }
+
+      if(Memory.structures.walls == null) {
+        Memory.structures.walls = {};
+      }
     }
   },
   role: {
@@ -75,6 +79,7 @@ let system_setup = {
         NEW_SOURCE_ACCESS_POINT: 'nsap',
         NEW_TOWER: 'new_tower',
         NEW_ROAD: 'new_road',
+        NEW_WALL: 'new_wall',
         NEW_STORAGE: 'new_storage',
         CONTROLLER_UPGRADE: 'cu',
       };
@@ -145,6 +150,9 @@ let system_setup = {
                 case STRUCTURE_ROAD:
                   on.new_road(structure);
                   break;
+                case STRUCTURE_WALL:
+                  on.new_wall(structure);
+                  break;
                 case STRUCTURE_TOWER:
                   on.new_tower(structure);
                   break;
@@ -171,11 +179,15 @@ let system_setup = {
           }
         },
         new_road: function(road) {
-          // Don't re-discover known roads
-
           if(Memory.structures.roads[road.id] == null) {
             Memory.structures.roads[road.id] = {};
             on_event(events.NEW_ROAD, {id: road.id})
+          }
+        },
+        new_wall: function(wall) {
+          if(Memory.structures.walls[wall.id] == null) {
+            Memory.structures.walls[wall.id] = {};
+            on_event(events.NEW_WALL, {id: wall.id})
           }
         },
         game_tick: function (game_tick, task_name, object) {
@@ -263,13 +275,4 @@ module.exports = function () {
   }
 
   global.systemIsUp = true;
-
-  // one time code
-  // let lookForStructures = Game.rooms['W3S88'].lookForAtArea(LOOK_STRUCTURES, 0, 0, 49, 49, true);
-  // lookForStructures.forEach(function(look_at) {
-  //   let structure = look_at.structure;
-  //   if (structure.structureType == STRUCTURE_ROAD) {
-  //     on.new_road(structure);
-  //   }
-  // });
 };

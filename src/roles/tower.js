@@ -5,24 +5,40 @@ module.exports = {
   run: function (tower) {
     let things_to_repair =
       Object.keys(Memory.structures.roads)
-      .map(function(road_id) {
-        return Game.getObjectById(road_id)
-      })
-      .filter(function(road) {
-        if (road == null)
-          return false;
+        .map(function (road_id) {
+          return Game.getObjectById(road_id)
+        })
+        .filter(function (road) {
+          if (road == null)
+            return false;
 
-        return road.hits < (road.hitsMax - 800);
-      })
-      .sort(function(a, b) {
-        let a_ratio = a.hits / a.hitsMax;
-        let b_ratio = b.hits / b.hitsMax;
-        return a_ratio - b_ratio;
-      });
+          return road.hits < (road.hitsMax - 800);
+        })
+        .sort(function (a, b) {
+          let a_ratio = a.hits / a.hitsMax;
+          let b_ratio = b.hits / b.hitsMax;
+          return a_ratio - b_ratio;
+        }).concat(
+        Object.keys(Memory.structures.walls)
+          .map(function (wall_id) {
+            return Game.getObjectById(wall_id)
+          })
+          .filter(function (wall) {
+            if (wall == null)
+              return false;
 
-    if(things_to_repair.length > 0 && tower.energy >= TOWER_ENERGY_COST) {
+            return wall.hits < 1000;
+          })
+          .sort(function (a, b) {
+            let a_ratio = a.hits / a.hitsMax;
+            let b_ratio = b.hits / b.hitsMax;
+            return a_ratio - b_ratio;
+          })
+      );
+
+    if (things_to_repair.length > 0 && tower.energy >= TOWER_ENERGY_COST) {
       let thingToRepair = things_to_repair[0];
-      console.log(`Repairing ${thingToRepair.pos}: ${thingToRepair.hits / thingToRepair.hitsMax}`);
+      // console.log(`Repairing ${thingToRepair.pos}: ${thingToRepair.hits / thingToRepair.hitsMax}`);
       tower.repair(thingToRepair);
     }
   }
