@@ -7,7 +7,7 @@ module.exports = {
   needed: function (spawn) {
     return 3;
   },
-  body: [CARRY, CARRY, CARRY, WORK, MOVE],
+  body: [CARRY, CARRY, CARRY, WORK, MOVE, MOVE],
 
   /** @param {Creep} creep **/
   run: function (creep) {
@@ -33,6 +33,7 @@ module.exports = {
               visualizePathStyle: {
                 stroke: '#38ff00',
                 strokeWidth: .15,
+                opacity: .75
               }
             });
         } else if (result == ERR_NOT_ENOUGH_RESOURCES) {

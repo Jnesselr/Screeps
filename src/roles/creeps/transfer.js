@@ -9,13 +9,23 @@ let container_filter = function (structure) {
 };
 
 const fill_order = [
-  STRUCTURE_SPAWN,
   STRUCTURE_TOWER,
+  STRUCTURE_SPAWN,
+  STRUCTURE_EXTENSION,
   STRUCTURE_STORAGE,
-  STRUCTURE_EXTENSION
 ];
 
 let container_sort = function(a, b) {
+  if(a.structureType == STRUCTURE_SPAWN || a.structureType == STRUCTURE_EXTENSION) {
+    if (a.room.energyAvailable < 600)
+      return -1
+  }
+
+  if(b.structureType == STRUCTURE_SPAWN || b.structureType == STRUCTURE_EXTENSION) {
+    if (b.room.energyAvailable < 600)
+      return 1;
+  }
+
   let a_order = fill_order.indexOf(a.structureType);
   let b_order = fill_order.indexOf(b.structureType);
   return a_order - b_order;
@@ -43,6 +53,9 @@ module.exports = {
         break;
 
       case 'Transfer':
+        if(creep.carry[RESOURCE_ENERGY] == 0)
+          creep.memory.state = 'Need_Energy';
+
         let targets = creep.room.find(FIND_STRUCTURES)
           .filter(container_filter)
           .sort(container_sort);
@@ -55,6 +68,7 @@ module.exports = {
                 visualizePathStyle: {
                   stroke: '#ff0314',
                   strokeWidth: .15,
+                  opacity: .75
                 }
               });
           } else if (result == ERR_NOT_ENOUGH_RESOURCES) {

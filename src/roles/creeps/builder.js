@@ -70,6 +70,7 @@ module.exports = {
               visualizePathStyle: {
                 stroke: '#00a4ff',
                 strokeWidth: .15,
+                opacity: .75
               }
             });
           } else if (result == ERR_NOT_ENOUGH_RESOURCES) {

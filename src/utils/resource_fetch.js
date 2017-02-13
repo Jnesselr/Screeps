@@ -19,6 +19,7 @@ module.exports = {
             visualizePathStyle: {
               stroke: '#fffe00',
               strokeWidth: .15,
+              opacity: .75
             }
           });
         }

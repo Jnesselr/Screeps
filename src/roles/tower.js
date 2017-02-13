@@ -20,9 +20,10 @@ module.exports = {
         return a_ratio - b_ratio;
       });
 
-    if(things_to_repair) {
-      // console.log(`Repairing ${things_to_repair[0].pos}`);
-      tower.repair(things_to_repair[0]);
+    if(things_to_repair.length > 0 && tower.energy >= TOWER_ENERGY_COST) {
+      let thingToRepair = things_to_repair[0];
+      console.log(`Repairing ${thingToRepair.pos}: ${thingToRepair.hits / thingToRepair.hitsMax}`);
+      tower.repair(thingToRepair);
     }
   }
 };
