@@ -3,6 +3,7 @@ const resource_fetch = require('./../../utils/resource_fetch.js');
 const build_order = [
   STRUCTURE_ROAD,
   STRUCTURE_EXTENSION,
+  STRUCTURE_STORAGE,
   STRUCTURE_CONTAINER,
   STRUCTURE_WALL,
   STRUCTURE_RAMPART
@@ -75,6 +76,9 @@ module.exports = {
             creep.memory.state = 'Need_Energy';
           }
         } else {
+          // The construction site has been completed
+          on.construction_complete(creep.memory.target_type, creep.memory.target_pos);
+
           creep.memory.state = 'Find_Target';
         }
         break;

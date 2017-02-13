@@ -11,6 +11,17 @@ let system_setup = {
       };
     }
   },
+  structure: {
+    init: function () {
+      if (Memory.structures == null) {
+        Memory.structures = {};
+      }
+
+      if(Memory.structures.roads == null) {
+        Memory.structures.roads = {};
+      }
+    }
+  },
   role: {
     always: function () {
       global.roleType = {
@@ -59,6 +70,7 @@ let system_setup = {
         NEW_SOURCE: 'new_source',
         NEW_SOURCE_ACCESS_POINT: 'nsap',
         NEW_TOWER: 'new_tower',
+        NEW_ROAD: 'new_road',
         CONTROLLER_UPGRADE: 'cu',
       };
 
@@ -86,8 +98,8 @@ let system_setup = {
       };
 
       global.on = {
-        new_room: function (name) {
-          on_event(events.NEW_ROOM, {room: name});
+        new_room: function (room) {
+          on_event(events.NEW_ROOM, {room: room.name});
         },
         new_creep: function (name) {
           on_event(events.NEW_CREEP, {creep: name})
@@ -117,6 +129,24 @@ let system_setup = {
 
           on_event(events.NEW_SOURCE_ACCESS_POINT, position);
         },
+        construction_complete: function(structure_type, pos) {
+          let room = Game.rooms[pos.roomName];
+          let structures = room.lookForAt(LOOK_STRUCTURES, pos.x, pos.y);
+
+          structures.forEach(function(structure) {
+            if(structure.structureType == structure_type) {
+              console.log(`New ${structure_type} completed at ${structure.pos}`);
+              switch(structure_type) {
+                case STRUCTURE_ROAD:
+                  on.new_road(structure);
+                  break;
+                case STRUCTURE_TOWER:
+                  on.new_tower(structure);
+                  break;
+              }
+            }
+          });
+        },
         new_tower: function(tower) {
           if(Memory.towers[tower.id] == null) {
             Memory.towers[tower.id] = {
@@ -124,6 +154,14 @@ let system_setup = {
             };
 
             on_event(events.NEW_TOWER, {id: tower.id})
+          }
+        },
+        new_road: function(road) {
+          // Don't re-discover known roads
+
+          if(Memory.structures.roads[road.id] == null) {
+            Memory.structures.roads[road.id] = {};
+            on_event(events.NEW_ROAD, {id: road.id})
           }
         },
         game_tick: function (game_tick, task_name, object) {
@@ -156,6 +194,14 @@ let system_setup = {
       Memory.event.name_source_map = {};
       Memory.event.event_map = {};
 
+      // First fill in empty events
+      Object.keys(global.events).forEach(function (event_key) {
+        let event = global.events[event_key];
+
+        Memory.event.event_map[event] = []
+      });
+
+      // Then add the scripts to the correct event
       let task_context = context.task();
 
       task_context.keys().forEach(function (filename) {
@@ -163,10 +209,6 @@ let system_setup = {
 
         task.when.forEach(function (event) {
           console.log(`Event '${event}' registered for '${filename}'`);
-
-          if (Memory.event.event_map[event] == null) {
-            Memory.event.event_map[event] = [];
-          }
 
           Memory.event.event_map[event].push(filename);
           Memory.event.name_source_map[task.name] = filename;
@@ -176,15 +218,10 @@ let system_setup = {
   }
 };
 
-function first_time_initialization() {
+function init() {
   system_setup.event.init();
   system_setup.role.init();
-
-  Object.keys(Game.rooms).forEach(function(room_name) {
-    on.new_room(room);
-  });
-
-  Memory.first_time_init_done = true;
+  system_setup.structure.init();
 }
 
 module.exports = function () {
@@ -194,17 +231,31 @@ module.exports = function () {
 
   if (Memory.first_time_init_done == null) {
     console.log('First time Initialization');
-    first_time_initialization();
+    init();
+
+    Object.keys(Game.rooms).forEach(function(room_name) {
+      on.new_room(Game.rooms[room_name]);
+    });
+
+    Memory.first_time_init_done = true;
 
   } else if (Memory.cached_hash != '<%= hash %>') {
     // Cache buster
 
     console.log('Reinitialization');
-    system_setup.event.init();
-    system_setup.role.init();
+    init();
 
     Memory.cached_hash = '<%= hash %>';
   }
 
   global.systemIsUp = true;
+
+  // one time code
+  let lookForStructures = Game.rooms['W3S88'].lookForAtArea(LOOK_STRUCTURES, 0, 0, 49, 49, true);
+  lookForStructures.forEach(function(look_at) {
+    let structure = look_at.structure;
+    if (structure.structureType == STRUCTURE_ROAD) {
+      on.new_road(structure);
+    }
+  });
 };
